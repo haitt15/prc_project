@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace PRC_Project.Data.UnitOfWork
 {
-    public class UnitOfWork : IUnitOfWork   
+    public class UnitOfWork : IUnitOfWork  , IDisposable
     {
         private ApplicationDbContext _context;
 
@@ -18,14 +18,29 @@ namespace PRC_Project.Data.UnitOfWork
         private bool _disposed = false;
         public IGenericRepository<Product> ProductRepository { get; set; }
 
+        public IGenericRepository<Category> CategoryRepository { get; set; }
+
+        public IGenericRepository<Orders> OrdersRepository { get; set; }
+
+        public IGenericRepository<OrderDetail> OrderDetailRepository { get; set; }
+
+        public IGenericRepository<Users> UsersRepository { get; set; }
+
+        public IGenericRepository<Role> RoleRepository { get; set; }
+
         private void InitRepository()
         {
             ProductRepository = new GenericRepository<Product>(_context);
+            CategoryRepository = new GenericRepository<Category>(_context);
+            OrdersRepository = new GenericRepository<Orders>(_context);
+            OrderDetailRepository = new GenericRepository<OrderDetail>(_context);
+            UsersRepository = new GenericRepository<Users>(_context);
+            RoleRepository = new GenericRepository<Role>(_context);
         }
 
-        public async Task SaveAsync()
+        public async Task<int> SaveAsync()
         {
-            await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync();
         }
 
         protected virtual void Dispose(bool disposing)

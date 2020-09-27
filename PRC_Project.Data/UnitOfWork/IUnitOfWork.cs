@@ -7,6 +7,13 @@ namespace PRC_Project.Data.UnitOfWork
     public interface IUnitOfWork
     {
         IGenericRepository<Product> ProductRepository { get; }
-        Task SaveAsync();
+        IGenericRepository<Category> CategoryRepository { get; }
+
+        IGenericRepository<Orders> OrdersRepository { get; }
+        IGenericRepository<OrderDetail> OrderDetailRepository { get; }
+        IGenericRepository<Users> UsersRepository { get; }
+        IGenericRepository<Role> RoleRepository { get; }
+
+        Task<int> SaveAsync();
     }
 }

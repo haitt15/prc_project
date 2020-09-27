@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PRC_Project.Data\PRC_Project.Data.csproj" />
+  </ItemGroup>
+
 </Project>
