@@ -19,7 +19,7 @@ namespace PRC_Project.API.Controllers
         {
             _categoryService = categoryService;
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> GetCategories()
         {
@@ -32,11 +32,16 @@ namespace PRC_Project.API.Controllers
             var result = await _categoryService.GetByIdAsync(id);
             return Ok(result);
         }
-
+        [HttpGet("{id}/product")]
+        public async Task<IActionResult> GetListProductsByCategory([FromRoute] int id)
+        {
+            var result = await _categoryService.GetAsync(filter: cate => cate.CategoryId == id, includeProperties: "Product");
+            return Ok(result);
+        }
         [HttpGet("paging")]
         public async Task<IActionResult> GetCategoriesByPageSize([FromQuery] CategoryModel categoryModel)
         {
-            var result = await _categoryService.GetWithPagingAsync(pageIndex:categoryModel.PageIndex , pageSize: categoryModel.PageSize);
+            var result = await _categoryService.GetWithPagingAsync(pageIndex: categoryModel.PageIndex, pageSize: categoryModel.PageSize);
             return Ok(result);
         }
         [HttpPut]
