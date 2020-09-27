@@ -17,24 +17,8 @@ namespace PRC_Project.Data.Repository
             _context = context;
             _dbSet = context.Set<TEntity>();
         }
-
-        public virtual void Add(TEntity entity)
-        {
-            _dbSet.Add(entity);
-        }
-
-        public virtual void Delete(object id)
-        {
-            TEntity entityToDelete = _dbSet.Find(id);
-        }
-
-        public virtual void Delete(TEntity entityToDelete)
-        {
-            throw new NotImplementedException();
-        }
-
         public virtual IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>,
-                                        IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "")
+                                     IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "")
         {
             IQueryable<TEntity> query = _dbSet;
 
@@ -51,16 +35,36 @@ namespace PRC_Project.Data.Repository
 
             return orderBy != null ? orderBy(query) : query;
         }
-
         public virtual async Task<TEntity> FindByIdAsync(object id)
         {
             return await _dbSet.FindAsync(id);
         }
-
-        public virtual void Update(TEntity entityToUpdate)
+        public virtual void Add(TEntity entity)
         {
-            _dbSet.Attach(entityToUpdate);
-            _context.Entry(entityToUpdate).State = EntityState.Modified;
+            if (entity == null) throw new ArgumentException("entity");
+            _dbSet.Add(entity);
         }
+
+        public virtual void Update(TEntity entity)
+        {
+            if (entity == null) throw new ArgumentException("entity");
+            _dbSet.Attach(entity);
+            _dbSet.Update(entity);
+        }
+        public virtual void Delete(object id)
+        {
+            TEntity entity = _dbSet.Find(id);
+            _dbSet.Attach(entity);
+            _dbSet.Remove(entity);
+        }
+
+        public virtual void Delete(TEntity entityToDelete)
+        {
+            throw new NotImplementedException();
+        }
+
+     
+
+
     }
 }
