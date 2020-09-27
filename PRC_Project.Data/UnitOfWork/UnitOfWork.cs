@@ -18,9 +18,12 @@ namespace PRC_Project.Data.UnitOfWork
         private bool _disposed = false;
         public IGenericRepository<Product> ProductRepository { get; set; }
 
+        public IGenericRepository<Category> CategoryRepository { get; set; }
+
         private void InitRepository()
         {
             ProductRepository = new GenericRepository<Product>(_context);
+            CategoryRepository = new GenericRepository<Category>(_context);
         }
 
         public async Task SaveAsync()
