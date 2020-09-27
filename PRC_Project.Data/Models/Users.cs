@@ -17,9 +17,7 @@ namespace PRC_Project.Data.Models
         public string Username { get; set; }
         [Required]
         public byte[] PasswordHash { get; set; }
-        [Required]
         public byte[] PasswordSalt { get; set; }
-        [Required]
         [StringLength(450)]
         public string Email { get; set; }
         [Required]

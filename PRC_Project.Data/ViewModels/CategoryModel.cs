@@ -8,5 +8,8 @@ namespace PRC_Project.Data.ViewModels
     {
         public int CategoryId { get; set; }
         public string CategoryNm { get; set; }
+
+        public int PageIndex { get; set; }
+        public int PageSize { get; set; }
     }
 }

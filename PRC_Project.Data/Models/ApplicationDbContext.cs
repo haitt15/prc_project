@@ -26,7 +26,7 @@ namespace PRC_Project.Data.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=SE130022\\SQLEXPRESS;Database=DB_PRC_Project;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=SE130120;Database=DB_PRC_Project;Trusted_Connection=True;");
             }
         }
 

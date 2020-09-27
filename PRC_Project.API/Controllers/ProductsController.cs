@@ -20,12 +20,12 @@ namespace PRC_Project.API.Controllers
             _productService = productService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
-        {
-            var result = await _productService.GetAsync(filter: f => f.DelFlg == false, page: 2);
-            return Ok(result);
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> Get()
+        //{
+        //    var result = await _productService.GetAsync(filter: f => f.DelFlg == false, page: 2);
+        //    return Ok(result);
+        //}
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] ProductModel model)

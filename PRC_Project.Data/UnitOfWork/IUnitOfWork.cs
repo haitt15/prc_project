@@ -8,6 +8,12 @@ namespace PRC_Project.Data.UnitOfWork
     {
         IGenericRepository<Product> ProductRepository { get; }
         IGenericRepository<Category> CategoryRepository { get; }
-        Task SaveAsync();
+
+        IGenericRepository<Orders> OrdersRepository { get; }
+        IGenericRepository<OrderDetail> OrderDetailRepository { get; }
+        IGenericRepository<Users> UsersRepository { get; }
+        IGenericRepository<Role> RoleRepository { get; }
+
+        Task<int> SaveAsync();
     }
 }
