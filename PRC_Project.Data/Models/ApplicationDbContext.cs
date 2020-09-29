@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace PRC_Project.Data.Models
 {
@@ -45,6 +47,8 @@ namespace PRC_Project.Data.Models
 
             modelBuilder.Entity<OrderDetail>(entity =>
             {
+                entity.Property(e => e.OrderId).IsUnicode(false);
+
                 entity.Property(e => e.ProductId).IsUnicode(false);
 
                 entity.HasOne(d => d.Order)
@@ -63,7 +67,9 @@ namespace PRC_Project.Data.Models
             modelBuilder.Entity<Orders>(entity =>
             {
                 entity.HasKey(e => e.OrderId)
-                    .HasName("PK__Orders__C3905BCFF0B2AFEB");
+                    .HasName("PK__Orders__C3905BCFDFEC50D1");
+
+                entity.Property(e => e.OrderId).IsUnicode(false);
 
                 entity.Property(e => e.InsBy).IsUnicode(false);
 
@@ -123,7 +129,7 @@ namespace PRC_Project.Data.Models
             modelBuilder.Entity<Users>(entity =>
             {
                 entity.HasKey(e => e.Username)
-                    .HasName("PK__Users__536C85E5E56CBB98");
+                    .HasName("PK__Users__536C85E5CB473CF6");
 
                 entity.Property(e => e.Username).IsUnicode(false);
 

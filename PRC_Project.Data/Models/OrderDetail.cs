@@ -9,7 +9,9 @@ namespace PRC_Project.Data.Models
     {
         [Key]
         public int Id { get; set; }
-        public int OrderId { get; set; }
+        [Required]
+        [StringLength(50)]
+        public string OrderId { get; set; }
         [Required]
         [StringLength(50)]
         public string ProductId { get; set; }

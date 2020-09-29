@@ -21,10 +21,15 @@ namespace PRC_Project.API.Controllers
         }
 
         [HttpPost("{username}")]
-        public async Task<IActionResult> orderProducts([FromRoute] string username, [FromBody] IEnumerable<ProductModel> listProductModel)
+        public async Task<IActionResult> OrderProducts(string username, [FromBody] IEnumerable<ProductModel> listProductModel)
         {
-            var result = _orderService.OrderProducts(listProductModel, username);
-            return Ok(result);
+            var result = await _orderService.OrderProducts(listProductModel, username);
+            if(result != null)
+            {
+                return Created("", result);
+            }
+
+            return BadRequest();
         }
     }
 }

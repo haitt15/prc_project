@@ -13,7 +13,8 @@ namespace PRC_Project.Data.Models
         }
 
         [Key]
-        public int OrderId { get; set; }
+        [StringLength(50)]
+        public string OrderId { get; set; }
         [Required]
         [StringLength(100)]
         public string Username { get; set; }

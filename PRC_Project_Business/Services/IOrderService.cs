@@ -9,6 +9,6 @@ namespace PRC_Project_Business.Services
 {
   public  interface IOrderService
     {
-        public Task<bool> OrderProducts(IEnumerable<ProductModel> listProduct, string username);
+        public Task<Orders> OrderProducts(IEnumerable<ProductModel> listProduct, string username);
     }
 }
