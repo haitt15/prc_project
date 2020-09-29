@@ -13,10 +13,19 @@ namespace PRC_Project.Data.AutoMapper
         {
             CreateMap<Product, ProductModel>();
             CreateMap<ProductModel, Product>();
+
             CreateMap<Category, CategoryModel>();
             CreateMap<CategoryModel, Category>();
+
             CreateMap<OrderDetail, OrderDetailModel>();
             CreateMap<OrderDetailModel, OrderDetail>();
+
+            CreateMap<Users, UserModel>();
+            CreateMap<UserModel, Users>();
+            CreateMap<RegisterModel, Users>();
+
+            CreateMap<Role, RoleModel>();
+            CreateMap<RoleModel, Role>();
         }
     }
 }

@@ -2,7 +2,6 @@
 using PRC_Project.Data.Helper;
 using PRC_Project.Data.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -20,31 +19,10 @@ namespace PRC_Project.Data.Repository
             _dbSet = context.Set<TEntity>();
         }
 
-
-        public virtual async Task<IEnumerable<TEntity>> Get(Expression<Func<TEntity, bool>> filter = null,
-                Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "")
-        {
-            IQueryable<TEntity> query = _dbSet;
-
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
-
-            foreach (var includeProperty in includeProperties.Split
-                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                query = query.Include(includeProperty);
-            }
-
-            return orderBy != null ? await orderBy(query).ToListAsync() : await query.ToListAsync();
-        }
-
-
         // Get with paging 
         // default value page = 1 , pageSize = 5
-        public virtual async Task<PaginatedList<TEntity>> GetWithPaging(Expression<Func<TEntity, bool>> filter = null,
-             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "", int pageIndex = 1, int pageSize = 5)
+        public virtual async Task<PaginatedList<TEntity>> Get(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> filter = null,
+             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "")
         {
             IQueryable<TEntity> query = _dbSet;
 
@@ -58,10 +36,12 @@ namespace PRC_Project.Data.Repository
             {
                 query = query.Include(includeProperty);
             }
+
             if (orderBy != null)
             {
                 query = orderBy(query);
             }
+
             return await PaginatedList<TEntity>.CreateAsync(query.AsNoTracking(), pageIndex, pageSize);
         }
 
@@ -110,6 +90,14 @@ namespace PRC_Project.Data.Repository
             }
 
             return query.LastOrDefaultAsync(); 
+        }
+
+        public IQueryable<TEntity> GetByObject(Expression<Func<TEntity, bool>> filter)
+        {
+            IQueryable<TEntity> query = _dbSet;
+            query = query.Where(filter);
+
+            return query;
         }
     }
 }

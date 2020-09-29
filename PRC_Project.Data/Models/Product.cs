@@ -13,17 +13,19 @@ namespace PRC_Project.Data.Models
         }
 
         [Key]
-        [StringLength(10)]
+        [StringLength(50)]
         public string ProductId { get; set; }
         [Required]
-        [StringLength(50)]
+        [StringLength(200)]
         public string ProductNm { get; set; }
         [Required]
         [StringLength(500)]
         public string Description { get; set; }
         public double Price { get; set; }
         public string Photo { get; set; }
-        public int CategoryId { get; set; }
+        [Required]
+        [StringLength(50)]
+        public string CategoryId { get; set; }
         public bool DelFlg { get; set; }
         [Required]
         [StringLength(50)]

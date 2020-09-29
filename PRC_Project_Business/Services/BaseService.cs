@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using PRC_Project.Data.Helper;
 using PRC_Project.Data.Repository;
 using PRC_Project.Data.UnitOfWork;
@@ -26,12 +25,14 @@ namespace PRC_Project_Business.Services
             _mapper = mapper;
         }
 
-        public virtual async Task<bool> CreateAsync(TDto dto)
+        public virtual async Task<TDto> CreateAsync(TDto dto)
         {
             var entity = _mapper.Map<TEntity>(dto);
             _reponsitory.Add(entity);
 
-            return await _unitOfWork.SaveAsync() > 0;
+            await _unitOfWork.SaveAsync();
+
+            return _mapper.Map<TDto>(entity);
         }
 
         public virtual async Task<bool> DeleteAsync(object id)
@@ -44,14 +45,13 @@ namespace PRC_Project_Business.Services
             return await _unitOfWork.SaveAsync() > 0;
         }
 
-        public virtual async Task<bool> UpdateAsync(TDto dto)
+        public virtual async Task<TDto> UpdateAsync(TDto dto)
         {
-            if (dto != null)
-            {
-                var entity = _mapper.Map<TEntity>(dto);
-                _reponsitory.Update(entity);
-            }
-            return await _unitOfWork.SaveAsync() > 0;
+            var entity = _mapper.Map<TEntity>(dto);
+            _reponsitory.Update(entity);
+            await _unitOfWork.SaveAsync();
+
+            return _mapper.Map<TDto>(entity);
         }
 
         public virtual async Task<TDto> GetByIdAsync(object id)
@@ -63,14 +63,9 @@ namespace PRC_Project_Business.Services
             return null;
         }
 
-        public Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "")
+        public Task<PaginatedList<TEntity>> GetAsync(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "")
         {
-            return _reponsitory.Get(filter, orderBy, includeProperties);
-        }
-
-        public Task<PaginatedList<TEntity>> GetWithPagingAsync(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "", int pageIndex = 1, int pageSize = 5)
-        {
-            return _reponsitory.GetWithPaging(filter, orderBy, includeProperties, pageIndex, pageSize);
+            return _reponsitory.Get(pageIndex, pageSize, filter, orderBy, includeProperties);
         }
     }
 }

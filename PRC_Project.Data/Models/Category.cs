@@ -13,7 +13,8 @@ namespace PRC_Project.Data.Models
         }
 
         [Key]
-        public int CategoryId { get; set; }
+        [StringLength(50)]
+        public string CategoryId { get; set; }
         [Required]
         [StringLength(50)]
         public string CategoryNm { get; set; }
