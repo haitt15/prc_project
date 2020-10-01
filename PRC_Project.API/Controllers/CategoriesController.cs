@@ -19,13 +19,13 @@ namespace PRC_Project.API.Controllers
         {
             _categoryService = categoryService;
         }
-        
-        //[HttpGet]
-        //public async Task<IActionResult> GetCategories()
-        //{
-        //    var result = await _categoryService.GetAsync();
-        //    return Ok(result);
-        //}
+
+        [HttpGet("{categoryId}/products")]
+        public async Task<IActionResult> GetListProductsByCategory([FromRoute] string categoryId)
+        {
+            var result = await _categoryService.GetAsync(pageIndex: 1, pageSize: 10, filter: cate => cate.CategoryId == categoryId, includeProperties: "Product");
+            return Ok(result);
+        }
 
         [HttpGet("{categoryId}")]
         public async Task<IActionResult> GetById([FromRoute] string categoryId)

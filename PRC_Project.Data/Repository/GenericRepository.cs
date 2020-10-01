@@ -19,8 +19,6 @@ namespace PRC_Project.Data.Repository
             _dbSet = context.Set<TEntity>();
         }
 
-        // Get with paging 
-        // default value page = 1 , pageSize = 5
         public virtual async Task<PaginatedList<TEntity>> Get(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> filter = null,
              Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "")
         {
@@ -71,25 +69,6 @@ namespace PRC_Project.Data.Repository
             TEntity entity = _dbSet.Find(id);
             _dbSet.Attach(entity);
             _dbSet.Remove(entity);
-        }
-
-        // BUGGGGGGGGGGGGG
-        public Task<TEntity> GetLast(Expression<Func<TEntity, bool>> filter = null, string includeProperties = "")
-        {
-            IQueryable<TEntity> query = _dbSet;
-
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
-
-            foreach (var includeProperty in includeProperties.Split
-                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                query = query.Include(includeProperty);
-            }
-
-            return query.LastOrDefaultAsync(); 
         }
 
         public IQueryable<TEntity> GetByObject(Expression<Func<TEntity, bool>> filter)
