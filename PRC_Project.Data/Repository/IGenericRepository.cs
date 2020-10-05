@@ -11,6 +11,9 @@ namespace PRC_Project.Data.Repository
         Task<PaginatedList<TEntity>> Get(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> filter = null,
                                          Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, 
                                          string includeProperties = "");
+        IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null,
+                                         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+                                         string includeProperties = "");
         Task<TEntity> GetById(object id);
         IQueryable<TEntity> GetByObject(Expression<Func<TEntity, bool>> filter);
         void Add(TEntity entity);

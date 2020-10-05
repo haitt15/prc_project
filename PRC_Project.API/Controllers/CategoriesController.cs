@@ -49,6 +49,13 @@ namespace PRC_Project.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("products")]
+        public IActionResult Get()
+        {
+            var result = _categoryService.GetAll(filter: cate => cate.DelFlg == false, includeProperties: "Product");
+            return Ok(result);
+        }
+
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] CategoryModel categoryModel)
         {

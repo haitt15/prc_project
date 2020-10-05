@@ -67,5 +67,10 @@ namespace PRC_Project_Business.Services
         {
             return _reponsitory.Get(pageIndex, pageSize, filter, orderBy, includeProperties);
         }
+
+        public IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "")
+        {
+            return _reponsitory.GetAll(filter, orderBy, includeProperties);
+        }
     }
 }
