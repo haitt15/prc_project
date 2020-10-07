@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PRC_Project.Data.ViewModels;
 using PRC_Project_Business.Services;
@@ -20,18 +16,52 @@ namespace PRC_Project.API.Controllers
             _productService = productService;
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> Get()
-        //{
-        //    var result = await _productService.GetAsync(filter: f => f.DelFlg == false, page: 2);
-        //    return Ok(result);
-        //}
+        [HttpGet]
+        public async Task<IActionResult> Get([FromQuery] SearchProductModel model)
+        {
+            var result = await _productService.GetAsync(pageIndex: model.PageIndex, pageSize: model.PageSize, filter: f => f.DelFlg == false);
+            return Ok(result);
+        }
+
+        [HttpGet("{productId}")]
+        public async Task<IActionResult> GetById(string productId)
+        {
+            var result = await _productService.GetByIdAsync(productId);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(result);
+        }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] ProductModel model)
         {
             var result = await _productService.CreateAsync(model);
+            if (result != null)
+            {
+                return Created("", result);
+            }
+            return BadRequest();
+        }
+
+        [HttpDelete("{productId}")]
+        public async Task<IActionResult> Delete(string productId)
+        {
+            var result = await _productService.DeleteAsync(productId);
+            if (result)
+            {
+                return NoContent();
+            }
+            return BadRequest();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] ProductModel model)
+        {
+            var result = await _productService.UpdateAsync(model);
             return Ok(result);
         }
+    
     }
 }

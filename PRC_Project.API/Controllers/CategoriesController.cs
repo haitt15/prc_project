@@ -19,48 +19,63 @@ namespace PRC_Project.API.Controllers
         {
             _categoryService = categoryService;
         }
+        
+        //[HttpGet]
+        //public async Task<IActionResult> GetCategories()
+        //{
+        //    var result = await _categoryService.GetAsync();
+        //    return Ok(result);
+        //}
+
+        [HttpGet("{categoryId}")]
+        public async Task<IActionResult> GetById([FromRoute] string categoryId)
+        {
+            var result = await _categoryService.GetByIdAsync(categoryId);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(result);
+        }
 
         [HttpGet]
-        public async Task<IActionResult> GetCategories()
+        public async Task<IActionResult> Get([FromQuery] SearchCategoryModel model)
         {
-            var result = await _categoryService.GetAsync();
+            var result = await _categoryService.GetAsync(pageIndex: model.PageIndex, pageSize: model.PageSize, filter: x => x.DelFlg == false);
+            if (result == null)
+            {
+                return NotFound();
+            }
             return Ok(result);
         }
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetCategoryById([FromRoute] int id)
-        {
-            var result = await _categoryService.GetByIdAsync(id);
-            return Ok(result);
-        }
-        [HttpGet("{id}/product")]
-        public async Task<IActionResult> GetListProductsByCategory([FromRoute] int id)
-        {
-            var result = await _categoryService.GetAsync(filter: cate => cate.CategoryId == id, includeProperties: "Product");
-            return Ok(result);
-        }
-        [HttpGet("paging")]
-        public async Task<IActionResult> GetCategoriesByPageSize([FromQuery] CategoryModel categoryModel)
-        {
-            var result = await _categoryService.GetWithPagingAsync(pageIndex: categoryModel.PageIndex, pageSize: categoryModel.PageSize);
-            return Ok(result);
-        }
+
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] CategoryModel categoryModel)
         {
             var result = await _categoryService.UpdateAsync(categoryModel);
             return Ok(result);
         }
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] int id)
+
+        [HttpDelete("{categoryId}")]
+        public async Task<IActionResult> Delete(string categoryId)
         {
-            var result = await _categoryService.DeleteAsync(id);
-            return Ok(result);
+            var result = await _categoryService.DeleteAsync(categoryId);
+            if (result)
+            {
+                return NoContent();
+            }
+            return BadRequest();
         }
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CategoryModel model)
         {
             var result = await _categoryService.CreateAsync(model);
-            return Ok(result);
+            if(result != null)
+            {
+                return Created("", result);
+            }
+            return BadRequest();
         }
 
     }

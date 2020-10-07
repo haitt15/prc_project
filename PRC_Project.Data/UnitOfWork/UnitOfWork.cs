@@ -24,7 +24,7 @@ namespace PRC_Project.Data.UnitOfWork
 
         public IGenericRepository<OrderDetail> OrderDetailRepository { get; set; }
 
-        public IGenericRepository<Users> UsersRepository { get; set; }
+        public IUserRepository UsersRepository { get; set; }
 
         public IGenericRepository<Role> RoleRepository { get; set; }
 
@@ -34,7 +34,7 @@ namespace PRC_Project.Data.UnitOfWork
             CategoryRepository = new GenericRepository<Category>(_context);
             OrdersRepository = new GenericRepository<Orders>(_context);
             OrderDetailRepository = new GenericRepository<OrderDetail>(_context);
-            UsersRepository = new GenericRepository<Users>(_context);
+            UsersRepository = new UserRepository(_context);
             RoleRepository = new GenericRepository<Role>(_context);
         }
 

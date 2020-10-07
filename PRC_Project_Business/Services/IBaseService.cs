@@ -12,14 +12,12 @@ namespace PRC_Project_Business.Services
         where TEntity : class 
         where TDto : class
     {
-        Task<bool> CreateAsync(TDto dto);
-        Task<bool> UpdateAsync(TDto dto);
+        Task<PaginatedList<TEntity>> GetAsync(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> filter = null,
+                                                        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+                                                        string includeProperties = "");
+        Task<TDto> CreateAsync(TDto dto);
+        Task<TDto> UpdateAsync(TDto dto);
         Task<bool> DeleteAsync(object id);
         Task<TDto> GetByIdAsync(object id);
-
-        Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> filter = null,
-                           Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "");
-        Task<PaginatedList<TEntity>> GetWithPagingAsync(Expression<Func<TEntity, bool>> filter = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "", int pageIndex = 1, int pageSize = 5);
     }
 }

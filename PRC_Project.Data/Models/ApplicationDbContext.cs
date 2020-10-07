@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace PRC_Project.Data.Models
 {
@@ -26,7 +24,7 @@ namespace PRC_Project.Data.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=SE130120;Database=DB_PRC_Project;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=SE130022\\SQLEXPRESS;Database=DB_PRC_Project;Trusted_Connection=True;");
             }
         }
 
@@ -34,7 +32,7 @@ namespace PRC_Project.Data.Models
         {
             modelBuilder.Entity<Category>(entity =>
             {
-                entity.Property(e => e.CategoryId).ValueGeneratedNever();
+                entity.Property(e => e.CategoryId).IsUnicode(false);
 
                 entity.Property(e => e.InsBy).IsUnicode(false);
 
@@ -65,7 +63,7 @@ namespace PRC_Project.Data.Models
             modelBuilder.Entity<Orders>(entity =>
             {
                 entity.HasKey(e => e.OrderId)
-                    .HasName("PK__Orders__C3905BCF4B4C041C");
+                    .HasName("PK__Orders__C3905BCFF0B2AFEB");
 
                 entity.Property(e => e.InsBy).IsUnicode(false);
 
@@ -87,6 +85,8 @@ namespace PRC_Project.Data.Models
             modelBuilder.Entity<Product>(entity =>
             {
                 entity.Property(e => e.ProductId).IsUnicode(false);
+
+                entity.Property(e => e.CategoryId).IsUnicode(false);
 
                 entity.Property(e => e.InsBy).IsUnicode(false);
 
@@ -123,7 +123,7 @@ namespace PRC_Project.Data.Models
             modelBuilder.Entity<Users>(entity =>
             {
                 entity.HasKey(e => e.Username)
-                    .HasName("PK__Users__536C85E5F46487B2");
+                    .HasName("PK__Users__536C85E5E56CBB98");
 
                 entity.Property(e => e.Username).IsUnicode(false);
 
