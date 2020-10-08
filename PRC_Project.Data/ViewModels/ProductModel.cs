@@ -13,5 +13,7 @@ namespace PRC_Project.Data.ViewModels
         public string Photo { get; set; }
         public int Quantity { get;set; }
         public string CategoryId { get; set; }
+        public string PhotoForOrder { get; set; }
+
     }
 }

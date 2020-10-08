@@ -37,6 +37,7 @@ namespace PRC_Project.Data.Models
         public string UpdBy { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime UpdDatetime { get; set; }
+        public string PhotoForOrder { get; set; }
 
         [ForeignKey(nameof(CategoryId))]
         [InverseProperty("Product")]

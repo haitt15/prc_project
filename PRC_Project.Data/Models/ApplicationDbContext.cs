@@ -26,7 +26,7 @@ namespace PRC_Project.Data.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=SE130022\\SQLEXPRESS;Database=DB_PRC_Project;Trusted_Connection=True;");
+                //optionsBuilder.UseSqlServer("Server=SE130120;Database=DB_PRC_Project;Trusted_Connection=True;");
             }
         }
 
@@ -67,7 +67,7 @@ namespace PRC_Project.Data.Models
             modelBuilder.Entity<Orders>(entity =>
             {
                 entity.HasKey(e => e.OrderId)
-                    .HasName("PK__Orders__C3905BCFDFEC50D1");
+                    .HasName("PK__Orders__C3905BCF0D3A1662");
 
                 entity.Property(e => e.OrderId).IsUnicode(false);
 
@@ -100,6 +100,8 @@ namespace PRC_Project.Data.Models
 
                 entity.Property(e => e.Photo).IsUnicode(false);
 
+                entity.Property(e => e.PhotoForOrder).IsUnicode(false);
+
                 entity.Property(e => e.UpdBy).IsUnicode(false);
 
                 entity.Property(e => e.UpdDatetime).HasDefaultValueSql("(getdate())");
@@ -129,7 +131,7 @@ namespace PRC_Project.Data.Models
             modelBuilder.Entity<Users>(entity =>
             {
                 entity.HasKey(e => e.Username)
-                    .HasName("PK__Users__536C85E5CB473CF6");
+                    .HasName("PK__Users__536C85E57368F696");
 
                 entity.Property(e => e.Username).IsUnicode(false);
 
