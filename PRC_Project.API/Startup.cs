@@ -52,6 +52,11 @@ namespace PRC_Project.API
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FPTU - Coffee Shop API", Version = "v1" });
             });
 
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+            });
+
             var tokenValue = Configuration.GetSection("AppSettings:Token").Value;
             var url = Configuration.GetSection("AppSettings:Url").Value;
             services.AddAuthentication(options =>
@@ -84,6 +89,7 @@ namespace PRC_Project.API
             }
 
             app.UseHttpsRedirection();
+            app.UseCors(options => options.AllowAnyOrigin());
 
             app.UseSwagger();
 
