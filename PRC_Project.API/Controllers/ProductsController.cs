@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PRC_Project.Data.ViewModels;
 using PRC_Project_Business.Services;
 
@@ -17,6 +19,13 @@ namespace PRC_Project.API.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _productService.GetAll(filter: f => f.DelFlg == false).ToListAsync();
+            return Ok(result);
+        }
+
+        [HttpGet("paging")]
         public async Task<IActionResult> Get([FromQuery] SearchProductModel model)
         {
             var result = await _productService.GetAsync(pageIndex: model.PageIndex, pageSize: model.PageSize, filter: f => f.DelFlg == false);

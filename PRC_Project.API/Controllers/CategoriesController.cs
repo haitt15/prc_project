@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PRC_Project.Data.ViewModels;
 using PRC_Project_Business.Services;
 
@@ -18,6 +19,13 @@ namespace PRC_Project.API.Controllers
         public CategoriesController(ICategoryService categoryService)
         {
             _categoryService = categoryService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _categoryService.GetAll(filter: f => f.DelFlg == false).ToListAsync();
+            return Ok(result);
         }
 
         [HttpGet("{categoryId}/products")]
@@ -38,7 +46,8 @@ namespace PRC_Project.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet]
+
+        [HttpGet("paging")]
         public async Task<IActionResult> Get([FromQuery] SearchCategoryModel model)
         {
             var result = await _categoryService.GetAsync(pageIndex: model.PageIndex, pageSize: model.PageSize, filter: x => x.DelFlg == false);
@@ -78,7 +87,7 @@ namespace PRC_Project.API.Controllers
         public async Task<IActionResult> Create([FromBody] CategoryModel model)
         {
             var result = await _categoryService.CreateAsync(model);
-            if(result != null)
+            if (result != null)
             {
                 return Created("", result);
             }
