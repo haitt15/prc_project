@@ -15,6 +15,8 @@ namespace PRC_Project.Data.ViewModels
         public string Address { get; set; }
         public string Photo { get; set; }
         public string RoleId { get; set; }
+        public virtual RoleModel Role { get; set; }
+
 
     }
 }

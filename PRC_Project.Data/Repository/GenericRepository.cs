@@ -19,7 +19,7 @@ namespace PRC_Project.Data.Repository
             _dbSet = context.Set<TEntity>();
         }
 
-        public virtual async Task<PaginatedList<TEntity>> Get(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> filter = null,
+        public virtual async Task<PaginatedList<TEntity>> Get(int pageIndex=0, int pageSize=0, Expression<Func<TEntity, bool>> filter = null,
              Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "")
         {
             IQueryable<TEntity> query = _dbSet;
@@ -100,6 +100,21 @@ namespace PRC_Project.Data.Repository
             }
 
             return query;
+        }
+
+        public Task<TEntity> GetFirst(Expression<Func<TEntity, bool>> filter = null, string includeProperties = "")
+        {
+            IQueryable<TEntity> query = _dbSet;
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+            foreach (var includeProperty in includeProperties.Split
+               (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+            return query.FirstOrDefaultAsync();
         }
     }
 }

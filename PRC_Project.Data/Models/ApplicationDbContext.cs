@@ -20,6 +20,7 @@ namespace PRC_Project.Data.Models
         public virtual DbSet<Orders> Orders { get; set; }
         public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<Role> Role { get; set; }
+        public virtual DbSet<UserDevice> UserDevice { get; set; }
         public virtual DbSet<Users> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -126,6 +127,18 @@ namespace PRC_Project.Data.Models
                 entity.Property(e => e.UpdBy).IsUnicode(false);
 
                 entity.Property(e => e.UpdDatetime).HasDefaultValueSql("(getdate())");
+            });
+
+            modelBuilder.Entity<UserDevice>(entity =>
+            {
+                entity.Property(e => e.DeviceId).IsUnicode(false);
+
+                entity.Property(e => e.Username).IsUnicode(false);
+
+                entity.HasOne(d => d.UsernameNavigation)
+                    .WithMany(p => p.UserDevice)
+                    .HasForeignKey(d => d.Username)
+                    .HasConstraintName("FK__UserDevic__Usern__49C3F6B7");
             });
 
             modelBuilder.Entity<Users>(entity =>

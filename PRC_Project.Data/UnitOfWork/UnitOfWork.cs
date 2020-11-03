@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace PRC_Project.Data.UnitOfWork
 {
-    public class UnitOfWork : IUnitOfWork  , IDisposable
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private ApplicationDbContext _context;
 
@@ -28,6 +28,10 @@ namespace PRC_Project.Data.UnitOfWork
 
         public IGenericRepository<Role> RoleRepository { get; set; }
 
+        public IGenericRepository<UserDevice> UserDeviceRepository { get; set; }
+
+        public IGenericRepository<Users> UserGenRepository { get; set; }
+
         private void InitRepository()
         {
             ProductRepository = new GenericRepository<Product>(_context);
@@ -36,6 +40,8 @@ namespace PRC_Project.Data.UnitOfWork
             OrderDetailRepository = new GenericRepository<OrderDetail>(_context);
             UsersRepository = new UserRepository(_context);
             RoleRepository = new GenericRepository<Role>(_context);
+            UserDeviceRepository = new GenericRepository<UserDevice>(_context);
+            UserGenRepository = new GenericRepository<Users>(_context);
         }
 
         public async Task<int> SaveAsync()

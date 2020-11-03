@@ -12,6 +12,9 @@ namespace PRC_Project.Data.UnitOfWork
         IGenericRepository<OrderDetail> OrderDetailRepository { get; }
         IUserRepository UsersRepository { get; }
         IGenericRepository<Role> RoleRepository { get; }
+        IGenericRepository<UserDevice> UserDeviceRepository { get; }
+        IGenericRepository<Users> UserGenRepository { get; }
+
 
         Task<int> SaveAsync();
     }

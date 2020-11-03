@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FirebaseAdmin.Auth;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using PRC_Project.Data.ViewModels;
 using PRC_Project_Business.Services;
+using PRC_Project_Business.Services.Authenticate;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -18,12 +21,15 @@ namespace PRC_Project.API.Controllers
     {
         private readonly IUserService _userService;
         private readonly IRoleService _roleService;
+        private readonly IAuthenticateService _authService;
+
         private readonly IConfiguration _config;
 
-        public AuthController(IUserService userService, IRoleService roleService, IConfiguration config)
+        public AuthController(IUserService userService, IRoleService roleService, IConfiguration config, IAuthenticateService authService)
         {
             _userService = userService;
             _roleService = roleService;
+            _authService = authService;
             _config = config;
         }
 
@@ -78,6 +84,53 @@ namespace PRC_Project.API.Controllers
                 });
             }
             return Unauthorized();
+        }
+
+        [AllowAnonymous]
+        [HttpPost("Google")]
+        public async Task<IActionResult> LoginGoogle(UserModelRequestParam login)
+        {
+            try
+            {
+                FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(login.Token);
+                UserModel user = await _authService.LoginGoogle(decodedToken);
+                if (user != null)
+                {
+                    var authClaims = new List<Claim>
+                {
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Username),
+                    new Claim(ClaimTypes.NameIdentifier, user.Username),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(ClaimTypes.Role, user.Role.RoleNm)
+                };
+
+                    var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
+                    var apiUrl = _config.GetSection("AppSettings:Url").Value;
+                    var token = new JwtSecurityToken(
+                        issuer: apiUrl,
+                        audience: apiUrl,
+                        expires: DateTime.Now.AddYears(13),
+                        claims: authClaims,
+                        signingCredentials: new Microsoft.IdentityModel.Tokens.SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256Signature)
+                        );
+
+                    return Ok(new
+                    {
+                        token = new JwtSecurityTokenHandler().WriteToken(token),
+                        role = user.Role.RoleNm,
+                        email = user.Email,
+                        fullName = user.FullName,
+                        username = user.Username,
+                        photo = user.Photo,
+                        expiration = token.ValidTo
+                    });
+                }
+                return Unauthorized();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
     }
 }

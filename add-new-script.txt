@@ -1,0 +1,5 @@
+CREATE TABLE UserDevice(
+	Id int IDENTITY(1,1) NOT NULL,
+	Username varchar(100) FOREIGN KEY REFERENCES Users(Username) NULL,
+	DeviceId varchar(255) NULL
+	)

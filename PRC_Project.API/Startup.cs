@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -19,6 +21,8 @@ using Microsoft.OpenApi.Models;
 using PRC_Project.Data.Models;
 using PRC_Project.Data.UnitOfWork;
 using PRC_Project_Business.Services;
+using PRC_Project_Business.Services.Authenticate;
+using PRC_Project_Business.Services.FCM;
 
 namespace PRC_Project.API
 {
@@ -27,6 +31,10 @@ namespace PRC_Project.API
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            FirebaseApp.Create(new AppOptions()
+            {
+                Credential = GoogleCredential.FromFile("service-account.json"),
+            });
         }
 
         public IConfiguration Configuration { get; }
@@ -45,6 +53,8 @@ namespace PRC_Project.API
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IAuthenticateService, AuthenticateService>();
+            services.AddScoped<IFCMService, FCMService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddSwaggerGen(c =>
