@@ -44,7 +44,7 @@ namespace PRC_Project_Business.Services
         public async Task<Users> CreateUser(RegisterModel model, string password)
         {
             var user = _mapper.Map<Users>(model);
-            user.RoleId = Constants.Roles.ROLE_STAFF;
+            user.RoleId = Constants.Roles.ROLE_ADMIN_ID;
             await _unitOfWork.UsersRepository.Create(user, password);
             await _unitOfWork.SaveAsync();
             return user;

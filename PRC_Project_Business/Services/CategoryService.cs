@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using PRC_Project.Data.Helper;
 using PRC_Project.Data.Models;
 using PRC_Project.Data.Repository;
 using PRC_Project.Data.UnitOfWork;
@@ -22,9 +23,9 @@ namespace PRC_Project_Business.Services
             entity.CategoryId = Guid.NewGuid().ToString();
             entity.DelFlg = false;
             entity.InsDatetime = DateTime.Now;
-            entity.InsBy = "Admin";
+            entity.InsBy = Constants.Roles.ROLE_ADMIN;
             entity.UpdDatetime = DateTime.Now;
-            entity.UpdBy = "Admin";
+            entity.UpdBy = Constants.Roles.ROLE_ADMIN;
 
             _reponsitory.Add(entity);
             await _unitOfWork.SaveAsync();

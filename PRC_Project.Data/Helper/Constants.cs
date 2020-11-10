@@ -8,8 +8,10 @@ namespace PRC_Project.Data.Helper
     {
         public struct Roles
         {
-            public const string ROLE_STAFF = "role01";
-            public const string ROLE_STUDENT = "role02";
+            public const string ROLE_ADMIN_ID = "role01";
+            public const string ROLE_USER_ID = "role02";
+            public const string ROLE_ADMIN = "Admin";
+            public const string ROLE_USER = "User";
         }
     }
 }

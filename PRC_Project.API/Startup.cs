@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,13 +10,10 @@ using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PRC_Project.Data.Models;
@@ -31,10 +29,6 @@ namespace PRC_Project.API
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            FirebaseApp.Create(new AppOptions()
-            {
-                Credential = GoogleCredential.FromFile("service-account.json"),
-            });
         }
 
         public IConfiguration Configuration { get; }
@@ -60,6 +54,30 @@ namespace PRC_Project.API
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FPTU - Coffee Shop API", Version = "v1" });
+
+                //c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                //{
+                //    Name = "Authorization",
+                //    Type = SecuritySchemeType.ApiKey,
+                //    Scheme = "Bearer",
+                //    BearerFormat = "JWT",
+                //    In = ParameterLocation.Header,
+                //    Description = "JWT Authorization header using the Bearer scheme."
+                //});
+
+                //c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                //    {
+                //        new OpenApiSecurityScheme
+                //        {
+                //            Reference = new OpenApiReference
+                //            {
+                //                Type = ReferenceType.SecurityScheme,
+                //                Id = "Bearer"
+                //            }
+                //        },
+                //        new string[] {}
+                //    }
+                //});
             });
 
             // Cors configure
@@ -74,6 +92,12 @@ namespace PRC_Project.API
                 });
             });
 
+            var pathToKey = Path.Combine(Directory.GetCurrentDirectory(), "Key", "prc-project-8d312-firebase-adminsdk-kk905-37b90d3f6d.json");
+            FirebaseApp.Create(new AppOptions
+            {
+                Credential = GoogleCredential.FromFile(pathToKey)
+            });
+
             var tokenValue = Configuration.GetSection("AppSettings:Token").Value;
             var url = Configuration.GetSection("AppSettings:Url").Value;
             services.AddAuthentication(options =>
@@ -84,20 +108,22 @@ namespace PRC_Project.API
             })
                .AddJwtBearer(options =>
                {
+                   var firebaseProject = Configuration.GetSection("AppSettings:FirebaseProject").Value;
                    options.SaveToken = true;
                    options.RequireHttpsMetadata = false;
-                   options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                   options.Authority = "https://securetoken.google.com/" + firebaseProject;
+                   options.TokenValidationParameters = new TokenValidationParameters
                    {
                        ValidateIssuer = true,
                        ValidateAudience = true,
-                       ValidAudience = url,
-                       ValidIssuer = url,
+                       ValidAudience = firebaseProject,
+                       ValidIssuer = "https://securetoken.google.com/" + firebaseProject,
+                       ValidateLifetime = true,
                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenValue))
                    };
                });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -118,6 +144,7 @@ namespace PRC_Project.API
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

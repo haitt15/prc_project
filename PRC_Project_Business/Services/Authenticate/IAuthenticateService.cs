@@ -9,7 +9,7 @@ namespace PRC_Project_Business.Services.Authenticate
 {
     public interface IAuthenticateService
     {
-        public Task<UserModel> LoginGoogle(FirebaseToken userToken);
+        public Task<UserModel> LoginGoogle(string uid);
 
     }
 }

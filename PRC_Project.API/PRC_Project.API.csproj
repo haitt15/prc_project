@@ -22,5 +22,9 @@
     <ProjectReference Include="..\PRC_Project_Business\PRC_Project_Business.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Key\" />
+  </ItemGroup>
+
 
 </Project>

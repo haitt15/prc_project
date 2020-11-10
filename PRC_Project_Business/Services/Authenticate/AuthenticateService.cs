@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using FirebaseAdmin.Auth;
+using PRC_Project.Data.Helper;
 using PRC_Project.Data.Models;
 using PRC_Project.Data.UnitOfWork;
 using PRC_Project.Data.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PRC_Project_Business.Services.Authenticate
@@ -20,35 +19,42 @@ namespace PRC_Project_Business.Services.Authenticate
             _uow = uow;
             _mapper = mapper;
         }
-        public async Task<UserModel> LoginGoogle(FirebaseToken userToken)
+        public async Task<UserModel> LoginGoogle(string uid)
         {
-            string email = userToken.Claims["email"].ToString();
+            UserRecord user_firebase = await FirebaseAuth.DefaultInstance.GetUserAsync(uid);
 
-            Users users = await _uow.UserGenRepository.GetFirst(filter: el => el.Email == email, includeProperties: "Role");
+            var currentUser = await _uow.UsersRepository.GetByUsername(uid);
 
-            if (users == null)
+            if (currentUser == null)
             {
-                _uow.UserGenRepository.Add(new Users()
+                var user_info = new Users()
                 {
-                    Username = "Customer",
-                    Email = email,
-                    FullName = userToken.Claims["name"].ToString(),
-                    InsBy = "Admin",
+                    Username = uid,
+                    RoleId = Constants.Roles.ROLE_USER_ID,
+                    Email = user_firebase.Email,
+                    Phonenumber = user_firebase.PhoneNumber,
+                    FullName = user_firebase.DisplayName,
+                    Address = "",
+                    DelFlg = false,
+                    Photo = user_firebase.PhotoUrl,
+                    InsBy = Constants.Roles.ROLE_ADMIN,
                     InsDatetime = DateTime.Now,
-                    UpdBy = "Admin",
-                    UpdDatetime = DateTime.Now,
-                });
+                    UpdBy = Constants.Roles.ROLE_ADMIN,
+                    UpdDatetime = DateTime.Now
+                };
+
+                await _uow.UsersRepository.Create(user_info, "123456");
 
                 if (await _uow.SaveAsync() > 0)
                 {
-                    users = await _uow.UserGenRepository.GetFirst(filter: el => el.Email == email, includeProperties: "Role");
+                    return _mapper.Map<UserModel>(user_info);
                 }
                 else
                 {
                     throw new Exception("Create new account failed");
                 }
             }
-            return _mapper.Map<UserModel>(users);
+            return _mapper.Map<UserModel>(currentUser);
         }
     }
 }

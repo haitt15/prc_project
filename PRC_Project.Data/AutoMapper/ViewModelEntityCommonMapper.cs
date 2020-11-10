@@ -28,7 +28,7 @@ namespace PRC_Project.Data.AutoMapper
             CreateMap<RoleModel, Role>();
 
             CreateMap<UserDevice, UserDeviceModel>();
-            CreateMap<UserDeviceModel, UserDevicel>();
+            CreateMap<UserDeviceModel, UserDevice>();
         }
     }
 }

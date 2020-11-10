@@ -4,7 +4,6 @@ using PRC_Project.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PRC_Project.Data.Repository
@@ -37,9 +36,9 @@ namespace PRC_Project.Data.Repository
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
-            user.InsBy = "Admin";
+            user.InsBy = Constants.Roles.ROLE_ADMIN;
             user.InsDatetime = DateTime.Now;
-            user.UpdBy = "Admin";
+            user.UpdBy = Constants.Roles.ROLE_ADMIN;
             user.UpdDatetime = DateTime.Now;
 
             await _context.Users.AddAsync(user);
