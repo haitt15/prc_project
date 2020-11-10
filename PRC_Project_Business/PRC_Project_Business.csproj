@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FirebaseAdmin" Version="1.17.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PRC_Project.Data\PRC_Project.Data.csproj" />
   </ItemGroup>
 
