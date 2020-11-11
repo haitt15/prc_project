@@ -20,7 +20,6 @@ using PRC_Project.Data.Models;
 using PRC_Project.Data.UnitOfWork;
 using PRC_Project_Business.Services;
 using PRC_Project_Business.Services.Authenticate;
-using PRC_Project_Business.Services.FCM;
 
 namespace PRC_Project.API
 {
@@ -48,7 +47,6 @@ namespace PRC_Project.API
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IAuthenticateService, AuthenticateService>();
-            services.AddScoped<IFCMService, FCMService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddSwaggerGen(c =>
