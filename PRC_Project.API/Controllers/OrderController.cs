@@ -16,7 +16,7 @@ namespace PRC_Project.API.Controllers
             _orderService = orderService;
         }
 
-        [HttpPost("{username}")]
+        [HttpPost]
         public async Task<IActionResult> OrderProducts([FromBody] OrderModel orderModel)
         {
             var result = await _orderService.OrderProducts(orderModel);
