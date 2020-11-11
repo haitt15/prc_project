@@ -10,7 +10,6 @@ namespace PRC_Project.Data.Models
         public Users()
         {
             Orders = new HashSet<Orders>();
-            UserDevice = new HashSet<UserDevice>();
         }
 
         [Key]
@@ -51,7 +50,5 @@ namespace PRC_Project.Data.Models
         public virtual Role Role { get; set; }
         [InverseProperty("UsernameNavigation")]
         public virtual ICollection<Orders> Orders { get; set; }
-        [InverseProperty("UsernameNavigation")]
-        public virtual ICollection<UserDevice> UserDevice { get; set; }
     }
 }

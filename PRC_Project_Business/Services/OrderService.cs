@@ -19,17 +19,20 @@ namespace PRC_Project_Business.Services
             _mapper = mapper;
         }
 
-        public async Task<Orders> OrderProducts(IEnumerable<ProductModel> listProductModel, string username)
+        public async Task<Orders> OrderProducts(OrderModel orderModel)
         {
             Orders order = null;
-            if (listProductModel != null && username != null)
+            if (orderModel != null)
             {
                 order = new Orders
                 {
                     OrderId = Guid.NewGuid().ToString(),
-                    Username = username,
-                    InsBy = username,
-                    UpdBy = username,
+                    Username = orderModel.Username,
+                    Address = orderModel.Address,
+                    Phone = orderModel.Phone,
+                    Total = orderModel.Total,
+                    InsBy = orderModel.Username,
+                    UpdBy = orderModel.Username,
                     InsDatetime = DateTime.Now,
                     UpdDatetime = DateTime.Now,
                     DelFlg = false,
@@ -37,7 +40,7 @@ namespace PRC_Project_Business.Services
 
                 _unitOfWork.OrdersRepository.Add(order);
 
-                foreach (ProductModel product in listProductModel)
+                foreach (ProductModel product in orderModel.ListProductModels)
                 {
                     var orderDetailModel = new OrderDetailModel()
                     {

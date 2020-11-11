@@ -19,16 +19,19 @@ namespace PRC_Project.Data.Models
         [StringLength(100)]
         public string Username { get; set; }
         public bool DelFlg { get; set; }
-        [Required]
         [StringLength(50)]
         public string InsBy { get; set; }
         [Column(TypeName = "datetime")]
-        public DateTime InsDatetime { get; set; }
-        [Required]
+        public DateTime? InsDatetime { get; set; }
         [StringLength(50)]
         public string UpdBy { get; set; }
         [Column(TypeName = "datetime")]
-        public DateTime UpdDatetime { get; set; }
+        public DateTime? UpdDatetime { get; set; }
+        [StringLength(500)]
+        public string Address { get; set; }
+        [StringLength(10)]
+        public string Phone { get; set; }
+        public double? Total { get; set; }
 
         [ForeignKey(nameof(Username))]
         [InverseProperty(nameof(Users.Orders))]

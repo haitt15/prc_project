@@ -8,6 +8,10 @@ namespace PRC_Project.Data.ViewModels
     {
         public string OrderId { get; set; }
         public string Username { get; set; }
+        public string Address { get; set; }
+        public string  Phone { get; set; }
+        public double Total { get; set; }
+        public IEnumerable<ProductModel> ListProductModels { get; set; }
         public  List<OrderDetailModel> OrderDetail { get; set; }
     }
 }

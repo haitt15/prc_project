@@ -20,14 +20,13 @@ namespace PRC_Project.Data.Models
         public virtual DbSet<Orders> Orders { get; set; }
         public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<Role> Role { get; set; }
-        public virtual DbSet<UserDevice> UserDevice { get; set; }
         public virtual DbSet<Users> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //optionsBuilder.UseSqlServer("Server=SE130120;Database=DB_PRC_Project;Trusted_Connection=True;");
+                //optionsBuilder.UseSqlServer("Server=tcp:prc-project-server.database.windows.net,1433;Initial Catalog=DB_PRC_Project;Persist Security Info=False;User ID=thanhhai;Password=Prc123456;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             }
         }
 
@@ -68,13 +67,17 @@ namespace PRC_Project.Data.Models
             modelBuilder.Entity<Orders>(entity =>
             {
                 entity.HasKey(e => e.OrderId)
-                    .HasName("PK__Orders__C3905BCF0D3A1662");
+                    .HasName("PK__Orders__C3905BCF4A1EE2E2");
 
                 entity.Property(e => e.OrderId).IsUnicode(false);
+
+                entity.Property(e => e.Address).IsUnicode(false);
 
                 entity.Property(e => e.InsBy).IsUnicode(false);
 
                 entity.Property(e => e.InsDatetime).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Phone).IsUnicode(false);
 
                 entity.Property(e => e.UpdBy).IsUnicode(false);
 
@@ -129,22 +132,10 @@ namespace PRC_Project.Data.Models
                 entity.Property(e => e.UpdDatetime).HasDefaultValueSql("(getdate())");
             });
 
-            modelBuilder.Entity<UserDevice>(entity =>
-            {
-                entity.Property(e => e.DeviceId).IsUnicode(false);
-
-                entity.Property(e => e.Username).IsUnicode(false);
-
-                entity.HasOne(d => d.UsernameNavigation)
-                    .WithMany(p => p.UserDevice)
-                    .HasForeignKey(d => d.Username)
-                    .HasConstraintName("FK__UserDevic__Usern__49C3F6B7");
-            });
-
             modelBuilder.Entity<Users>(entity =>
             {
                 entity.HasKey(e => e.Username)
-                    .HasName("PK__Users__536C85E57368F696");
+                    .HasName("PK__Users__536C85E57EFBA568");
 
                 entity.Property(e => e.Username).IsUnicode(false);
 
