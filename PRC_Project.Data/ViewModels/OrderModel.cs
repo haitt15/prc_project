@@ -12,6 +12,6 @@ namespace PRC_Project.Data.ViewModels
         public string  Phone { get; set; }
         public string Note { get; set; }
         public double Total { get; set; }
-        public  List<OrderDetailModel> OrderDetail { get; set; }
+        public List<OrderDetailModel> OrderDetail { get; set; }
     }
 }
