@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace PRC_Project.Data.Models
 {
@@ -26,7 +24,7 @@ namespace PRC_Project.Data.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //optionsBuilder.UseSqlServer("Server=tcp:prc-project-server.database.windows.net,1433;Initial Catalog=DB_PRC_Project;Persist Security Info=False;User ID=thanhhai;Password=Prc123456;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+               // optionsBuilder.UseSqlServer("Server=tcp:prc-project-server.database.windows.net,1433;Initial Catalog=DB_PRC_Project;Persist Security Info=False;User ID=thanhhai;Password=Prc123456;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             }
         }
 
@@ -76,6 +74,8 @@ namespace PRC_Project.Data.Models
                 entity.Property(e => e.InsBy).IsUnicode(false);
 
                 entity.Property(e => e.InsDatetime).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Note).IsUnicode(false);
 
                 entity.Property(e => e.Phone).IsUnicode(false);
 

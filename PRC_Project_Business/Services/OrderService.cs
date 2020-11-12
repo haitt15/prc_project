@@ -3,7 +3,6 @@ using PRC_Project.Data.Models;
 using PRC_Project.Data.UnitOfWork;
 using PRC_Project.Data.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace PRC_Project_Business.Services
@@ -30,6 +29,7 @@ namespace PRC_Project_Business.Services
                     Username = orderModel.Username,
                     Address = orderModel.Address,
                     Phone = orderModel.Phone,
+                    Note = orderModel.Note,
                     Total = orderModel.Total,
                     InsBy = orderModel.Username,
                     UpdBy = orderModel.Username,
@@ -40,14 +40,14 @@ namespace PRC_Project_Business.Services
 
                 _unitOfWork.OrdersRepository.Add(order);
 
-                foreach (ProductModel product in orderModel.ListProductModels)
+                foreach (OrderDetailModel orderDetail in orderModel.OrderDetail)
                 {
                     var orderDetailModel = new OrderDetailModel()
                     {
                         OrderId = order.OrderId,
-                        ProductId = product.ProductId,
-                        Quantity = product.Quantity,
-                        Price = product.Price
+                        ProductId = orderDetail.ProductId,
+                        Quantity = orderDetail.Quantity,
+                        Price = orderDetail.Price
                     };
                     
                     _unitOfWork.OrderDetailRepository.Add(_mapper.Map<OrderDetail>(orderDetailModel));

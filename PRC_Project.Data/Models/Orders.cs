@@ -32,6 +32,8 @@ namespace PRC_Project.Data.Models
         [StringLength(10)]
         public string Phone { get; set; }
         public double? Total { get; set; }
+        [StringLength(500)]
+        public string Note { get; set; }
 
         [ForeignKey(nameof(Username))]
         [InverseProperty(nameof(Users.Orders))]
